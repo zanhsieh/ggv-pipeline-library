@@ -14,7 +14,7 @@ def call(body) {
     label: nlabel,
     containers: [
       containerTemplate(
-        name: 'bc', 
+        name: 'bc',
         image: builderImage,
         workingDir: '/home/jenkins',
         privileged: true,
@@ -27,13 +27,15 @@ def call(body) {
     ],
     volumes: [
       hostPathVolume(
-        hostPath: '/var/run/docker.sock', 
+        hostPath: '/var/run/docker.sock',
         mountPath: '/var/run/docker.sock'
       )
     ]
   ) {
     node(nlabel) {
-      body()
+      container('bc') {
+        body()
+      }
     }
   }
 }
